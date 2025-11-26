@@ -1,0 +1,207 @@
+{% load static %}
+
+<style>
+    /* Container dos Cards */
+    .galeria-container {
+        padding: 40px 0;
+        background-color: #f9fafb; /* Fundo cinza bem claro */
+    }
+
+    .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 30px;
+        padding: 0 20px;
+    }
+
+    /* O Card em si */
+    .imovel-card {
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden; /* Para a imagem não sair da borda arredondada */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 10px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+        border: 1px solid #e5e7eb;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .imovel-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Área da Imagem */
+    .card-img-top {
+        height: 200px;
+        width: 100%;
+        position: relative;
+    }
+
+    .card-img-top img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* Placeholder "Sem Foto" (O quadrado azul da imagem) */
+    .no-photo {
+        background-color: #5452f6; /* Azul Indigo da imagem */
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    /* Corpo do Card */
+    .card-body {
+        padding: 20px;
+    }
+
+    /* Cabeçalho do corpo (Tag + Preço) */
+    .card-header-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .tag-tipo {
+        background-color: #e0e7ff; /* Fundo azulzinho */
+        color: #4338ca; /* Texto azul escuro */
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .preco-texto {
+        color: #059669; /* Verde Esmeralda */
+        font-weight: 800;
+        font-size: 1.1rem;
+    }
+
+    /* Título e Detalhes */
+    .card-titulo {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 5px;
+        text-transform: capitalize;
+    }
+
+    .card-meta {
+        font-size: 0.85rem;
+        color: #6b7280; /* Cinza */
+        margin-bottom: 5px;
+    }
+
+    .card-endereco {
+        font-size: 0.9rem;
+        color: #4b5563;
+        margin-bottom: 10px;
+    }
+
+    .card-descricao {
+        font-size: 0.9rem;
+        color: #6b7280;
+        display: -webkit-box;
+        line-clamp: 2; /* Limita a 2 linhas */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        margin-bottom: 15px;
+    }
+
+    /* Botão inferior */
+    .card-footer-btn {
+        padding: 15px 20px;
+    }
+
+    .btn-detalhes {
+        display: block;
+        width: 100%;
+        background-color: #5452f6; /* Mesmo azul do topo */
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background 0.3s;
+    }
+
+    .btn-detalhes:hover {
+        background-color: #4338ca;
+        color: white;
+        text-decoration: none;
+    }
+</style>
+
+{% include 'partials/_buscar.html' %}
+
+<section class="galeria-container">
+    <div class="container">
+        <h2 style="text-align: center; margin-bottom: 40px; color: #333; font-weight: bold;">Imóveis Disponíveis</h2>
+
+        {% if cards %}
+        <div class="cards-grid">
+            {% for imovel in cards %}
+            
+            <div class="imovel-card">
+                
+                <a href="{% url 'imagem' imovel.id %}" style="text-decoration: none;">
+                    <div class="card-img-top">
+                        {% if imovel.foto %}
+                            <img src="{{ imovel.foto.url }}" alt="{{ imovel.nome }}">
+                        {% else %}
+                            <div class="no-photo">
+                                Sem Foto
+                            </div>
+                        {% endif %}
+                    </div>
+                </a>
+
+                <div class="card-body">
+                    
+                    <div class="card-header-info">
+                        <span class="tag-tipo">{{ imovel.categoria  }}</span>
+                        <span class="preco-texto">R$ {{ imovel.valor }}</span>
+                    </div>
+
+                    <h3 class="card-titulo">{{ imovel.nome }}</h3>
+
+                    <div class="card-meta">
+                        {{ imovel.tamanho|default:"--" }}m² | {{ imovel.numero_quarto|default:"--" }} Quartos
+                    </div>
+
+                    <div class="card-endereco">
+                        {{ imovel.endereco|default:"Endereço não informado" }}
+                    </div>
+
+                    <p class="card-descricao">
+                        {{ imovel.descricao }}
+                    </p>
+                </div>
+
+                <div class="card-footer-btn">
+                    <a href="{% url 'imagem' imovel.id %}" class="btn-detalhes">
+                        Ver Detalhes
+                    </a>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+            <div style="text-align: center; padding: 50px;">
+                <p>Nenhum imóvel cadastrado no momento.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>

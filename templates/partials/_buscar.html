@@ -1,0 +1,17 @@
+{% block content %}
+<div class="menu-lateral">
+    <nav class="menu-lateral__navegacao">
+        <a href="{% url 'cadastrar_imagem' %}" class="menu-lateral__link">
+            <i class="fa-solid fa-house"></i>
+            <span>Cadastrar</span>
+        </a>
+
+    </nav>
+</div>
+
+<form action="{% url 'buscar' %}" method="GET" class="d-flex" style="max-width: 400px; margin: 0 auto 30px auto;">
+    <input class="form-control me-2" type="search" name="buscar" placeholder="O que você procura?" aria-label="Search">
+    <button class="btn btn-outline-primary" type="submit">Buscar</button>
+</form>
+
+{% endblock %}
