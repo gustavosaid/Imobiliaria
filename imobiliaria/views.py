@@ -4,9 +4,10 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Q  # <--- IMPORTANTE: Importe o Q
 from imobiliaria.models import Imovel
 from imobiliaria.forms import ImovelForms
+from django.views.decorators.csrf import csrf_exempt
 
 
-
+@csrf_exempt
 def cadastrar(request): # 
     # 1. Se for POST (clicou no botão enviar)
     if request.method == 'POST':
