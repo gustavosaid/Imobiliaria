@@ -92,21 +92,11 @@
         margin-bottom: 1.25rem; /* Espaço entre os campos */
     }
 </style>
-
-<div class="menu-lateral">
-    <nav class="menu-lateral__navegacao">
-        <a href="{% url 'home' %}" class="menu-lateral__link">
-            <i class="fa-solid fa-house"></i>
-            <span>Home</span>
-        </a>
-
-    </nav>
-</div>
-
+{% include 'partials/_atalhos.html' %}
 
 <section class="container mt-5 mb-5">
     <div class="card-custom">
-        <h2 class="form-title">Área Administrativa - Cadastro de Fotografia</h2>
+        <h2 class="form-title">Área Administrativa - Cadastro do Imóvel </h2>
 
         <form action="{% url 'cadastrar_imagem' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}

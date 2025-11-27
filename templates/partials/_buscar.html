@@ -1,17 +1,207 @@
+{% extends 'shared/base.html' %}
 {% block content %}
-<div class="menu-lateral">
-    <nav class="menu-lateral__navegacao">
-        <a href="{% url 'cadastrar_imagem' %}" class="menu-lateral__link">
-            <i class="fa-solid fa-house"></i>
-            <span>Cadastrar</span>
-        </a>
 
-    </nav>
+<style>
+    /* --- CSS DA BARRA DE BUSCA (MANTIDO) --- */
+    .search-scroll-wrapper {
+        padding: 12px;
+        width: fit-content;
+        max-width: 100%;
+        margin: 0 auto;
+        overflow-x: auto;
+        padding-bottom: 10px;
+    }
+
+    .search-card {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        /* Arredondei um pouco mais */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        /* Sombra mais suave */
+        border: 1px solid #f0f0f0;
+
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: flex-end;
+        gap: 15px;
+        min-width: 1000px;
+    }
+
+    .form-group {
+        flex: 1;
+    }
+
+    .form-label {
+        
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #6c757d;
+        /* Cinza mais moderno */
+        margin-bottom: 6px;
+        white-space: nowrap;
+        display: block;
+        text-transform: uppercase;
+        /* Letras maiúsculas para elegância */
+        letter-spacing: 0.5px;
+    }
+
+    .form-control,
+    .form-select {
+        font-size: 0.95rem;
+        padding: 10px 12px;
+        /* Um pouco mais de espaço interno */
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+        width: 100%;
+        color: #495057;
+        background-color: #f8f9fa;
+        /* Fundo levemente cinza */
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        background-color: #fff;
+        border-color: #5452f6;
+        box-shadow: 0 0 0 3px rgba(84, 82, 246, 0.15);
+        /* Glow azul suave */
+    }
+
+    /* --- NOVO CSS PARA O BOTÃO VOLTAR --- */
+    .btn-voltar {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background-color: transparent;
+        color: #5452f6;
+        border: 2px solid #5452f6;
+        /* Borda da mesma cor */
+        padding: 8px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-voltar:hover {
+        background-color: #5452f6;
+        color: white;
+        transform: translateX(-3px);
+        /* Leve movimento para a esquerda */
+    }
+
+    /* --- CSS BOTÃO BUSCAR --- */
+    .btn-buscar {
+        background-color: #5452f6;
+        color: white;
+        border-radius: 8px;
+        padding: 0 30px;
+        /* Largura maior */
+        border: none;
+        height: 42px;
+        /* Altura exata para alinhar com os inputs */
+        font-weight: 600;
+        white-space: nowrap;
+        transition: all 0.2s;
+        box-shadow: 0 4px 6px rgba(84, 82, 246, 0.2);
+    }
+
+    .btn-buscar:hover {
+        background-color: #3b39d1;
+        box-shadow: 0 6px 8px rgba(84, 82, 246, 0.3);
+        transform: translateY(-1px);
+    }
+    .btn-cadastrar {
+        display: inline-flex;
+        align-items: center;
+        background-color: #198754; /* Verde sucesso */
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: none;
+        box-shadow: 0 4px 6px rgba(25, 135, 84, 0.2);
+    }
+
+    .btn-cadastrar:hover {
+        background-color: #157347; /* Verde mais escuro no hover */
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(25, 135, 84, 0.3);
+    }
+    
+    /* Pequeno ajuste no ícone para não ficar colado no texto */
+    .btn-cadastrar i {
+        font-size: 1.1rem;
+    }
+</style>
+
+
+{% include 'partials/_atalhos.html' %}
+<div class="container mt-5">
+
+    <div style="width: fit-content; max-width: 100%; margin: 0 auto; min-width: 90%; margin-bottom: 15px;">
+
+        <div class="search-scroll-wrapper">
+            
+            <form action="{% url 'buscar' %}" method="GET">
+
+                <div class="search-card">
+
+                    <div class="form-group">
+                        <label for="categoria" class="form-label">Tipo</label>
+                        <select id="categoria" name="categoria" class="form-select">
+                            <option value="" selected>Todos</option>
+                            <option value="casa">Casa</option>
+                            <option value="apartamento">Apartamento</option>
+                            <option value="ponto comercial">Comercial</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bairro" class="form-label">Bairro</label>
+                        <select id="bairro" name="bairro" class="form-select">
+                            <option value="" selected>Todos</option>
+                            {% for bairro in bairros %}
+                            <option value="{{ bairro }}">{{ bairro }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="quartos" class="form-label">Quartos Mín.</label>
+                        <input type="number" class="form-control" id="quartos" name="quartos" placeholder="0" min="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tamanho" class="form-label">Tamanho (m²)</label>
+                        <input type="number" class="form-control" id="tamanho" name="tamanho" placeholder="0" min="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="valor_min" class="form-label">Valor Mín.</label>
+                        <input type="number" class="form-control" id="valor_min" name="valor_min" placeholder="R$ 0"
+                            min="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="valor_max" class="form-label">Valor Máx.</label>
+                        <input type="number" class="form-control" id="valor_max" name="valor_max" placeholder="R$ Max"
+                            min="0">
+                    </div>
+
+                    <div>
+                        <button class="btn btn-buscar" type="submit">
+                            <i class="fa-solid fa-magnifying-glass me-2"></i> Buscar
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    
 </div>
-
-<form action="{% url 'buscar' %}" method="GET" class="d-flex" style="max-width: 400px; margin: 0 auto 30px auto;">
-    <input class="form-control me-2" type="search" name="buscar" placeholder="O que você procura?" aria-label="Search">
-    <button class="btn btn-outline-primary" type="submit">Buscar</button>
-</form>
 
 {% endblock %}

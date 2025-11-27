@@ -1,0 +1,139 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    /* Container do Header */
+    .header-imobi {
+        background-color: #ffffff;
+        border-radius: 10px;
+        /* Bordas arredondadas */
+        padding: 15px 25px;
+        /* Espaçamento interno */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        /* Sombra suave */
+        margin-bottom: 30px;
+        /* Espaço para o conteúdo de baixo */
+
+        display: flex;
+        justify-content: space-between;
+        /* Separa Esquerda e Direita */
+        align-items: center;
+        /* Centraliza verticalmente */
+        border: 1px solid #f0f0f0;
+        /* Borda sutil */
+    }
+
+    /* Lado Esquerdo: Logo e Nome */
+    .brand-area {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .brand-icon {
+        font-size: 1.5rem;
+        color: #e67e22;
+        /* Cor laranja similar à casinha da imagem */
+    }
+
+    .brand-name {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #0f172a;
+        /* Azul escuro quase preto */
+        margin: 0;
+    }
+
+    /* Lado Direito: ID e Botão */
+    .admin-area {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        /* Espaço entre o texto do ID e o botão */
+    }
+
+    .admin-id-text {
+        color: #8898aa;
+        /* Cinza claro */
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+
+    .btn-admin-view {
+        background-color: #009c62;
+        /* Verde esmeralda da imagem */
+        color: white;
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        border: none;
+        transition: background-color 0.2s;
+    }
+
+    .btn-admin-view:hover {
+        background-color: #007a4d;
+        /* Verde mais escuro ao passar o mouse */
+        color: white;
+    }
+
+    .brand-area {
+        display: flex;
+        /* O SEGREDO: Coloca os itens lado a lado */
+        align-items: center;
+        /* Centraliza verticalmente (meio a meio) */
+        gap: 12px;
+        /* Espaço entre o ícone e o texto */
+    }
+
+    .brand-logo {
+        height: 55px;
+        /* Define a altura fixa (ajuste se quiser maior/menor) */
+        width: auto;
+        /* Mantém a proporção da imagem */
+        object-fit: contain;
+        /* Garante que a imagem não distorça */
+    }
+
+    .brand-name {
+        font-size: 1.8rem;
+        /* Tamanho da fonte do texto */
+        font-weight: 800;
+        /* Negrito forte */
+        color: #0f172a;
+        /* Azul escuro (quase preto) */
+        margin: 0;
+        /* Remove margens padrão que empurram o texto */
+        line-height: 1;
+        /* Ajusta altura da linha */
+    }
+</style>
+
+<div class="container mt-4">
+
+    <div class="header-imobi">
+
+        <div class="brand-area">
+            <img src="{% static 'assets/icons/casa.png' %}" class="brand-logo">
+            <h1 class="brand-name">ImobiWeb</h1>
+        </div>
+
+        <div class="admin-area">
+
+            {% if user.is_superuser %}
+            <a href="{% url 'cadastrar_imagem' %}" class="btn-admin-view">
+                Mudar para Visão Admin
+            </a>
+            {% endif %}
+            <a href="{% url 'home'%}" class="btn-admin-view">
+                Voltar
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
