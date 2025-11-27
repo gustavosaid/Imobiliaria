@@ -109,8 +109,15 @@
         line-height: 1;
         /* Ajusta altura da linha */
     }
-</style>
 
+    .botao-bloqueado {
+        background-color: #ccc;
+        /* Cor cinza */
+        cursor: not-allowed;
+        /* Ícone de bloqueio no mouse */
+        opacity: 0.6;
+    }
+</style>
 <div class="container mt-4">
 
     <div class="header-imobi">
@@ -122,14 +129,24 @@
 
         <div class="admin-area">
 
-            {% if user.is_superuser %}
             <a href="{% url 'cadastrar_imagem' %}" class="btn-admin-view">
                 Mudar para Visão Admin
             </a>
+
+            {% if user.is_authenticated %}
+            <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-admin-view"
+                    style="background-color: #dc3545; border: none; cursor: pointer;">
+                    Sair
+                </button>
+            </form>
             {% endif %}
-            <a href="{% url 'home'%}" class="btn-admin-view">
+
+            <a href="{% url 'home' %}" class="btn-admin-view">
                 Voltar
             </a>
+
         </div>
 
     </div>

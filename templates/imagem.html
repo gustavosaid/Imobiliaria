@@ -21,47 +21,116 @@
     .property-section {
         font-family: 'Inter', sans-serif;
         color: var(--text-dark);
-        padding-top: 40px; /* Reduzido */
-        padding-bottom: 40px; /* Reduzido */
+        padding-top: 50px;
+        padding-bottom: 50px;
     }
 
-    /* --- O CARTÃO (COMPACTO) --- */
+    /* --- O CARTÃO PRINCIPAL --- */
     .property-card {
         background: #ffffff;
-        border-radius: 16px; /* Borda um pouco menos redonda */
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        border-radius: 16px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         overflow: hidden; 
         border: 1px solid #e2e8f0;
-        max-width: 900px; /* TRAVA A LARGURA PARA NÃO FICAR GIGANTE */
-        margin: 0 auto;   /* Centraliza o cartão */
+        /* AUMENTADO DE 900PX PARA 1100PX PARA DAR MAIS ESPAÇO */
+        max-width: 1100px; 
+        margin: 0 auto;
     }
 
-    /* --- COLUNA DA FOTO --- */
+    /* --- COLUNA DA FOTO & CARROSSEL --- */
     .image-column {
         background-color: #e2e8f0;
-        height: 100%;
-        min-height: 350px; /* Reduzido de 500px para 350px */
+        /* Importante: No desktop, a altura é 100% da coluna pai */
+        height: 100%; 
+        min-height: 450px; 
         position: relative;
     }
 
-    .property-image {
+    /* CSS DO CARROSSEL */
+    .carousel-wrapper {
+        position: relative;
         width: 100%;
         height: 100%;
-        object-fit: cover;
     }
 
+    .carousel-container {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        width: 100%;
+        height: 100%;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .carousel-container::-webkit-scrollbar {
+        display: none;
+    }
+
+    .carousel-slide {
+        flex: 0 0 100%;
+        width: 100%;
+        height: 100%;
+        scroll-snap-align: start;
+    }
+
+    .carousel-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Garante que a foto preencha tudo sem distorcer */
+    }
+
+    /* Setinhas de navegação */
+    .carousel-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.4);
+        color: white;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        z-index: 10;
+        border-radius: 50%;
+        width: 45px; /* Botões um pouco maiores */
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s, background 0.3s;
+        font-size: 20px;
+    }
+
+    .carousel-btn:hover {
+        background: rgba(0, 0, 0, 0.8);
+    }
+
+    .carousel-wrapper:hover .carousel-btn {
+        opacity: 1;
+    }
+
+    .prev-btn { left: 20px; }
+    .next-btn { right: 20px; }
+
+
+    /* Badge (Categoria) */
     .badge-floating {
         position: absolute;
-        top: 15px;
-        left: 15px;
+        top: 20px;
+        left: 20px;
         background: rgba(255, 255, 255, 0.95);
         color: var(--primary-color);
-        padding: 5px 12px; /* Menor */
-        border-radius: 20px;
-        font-size: 0.7rem;
+        padding: 6px 14px;
+        border-radius: 30px;
+        font-size: 0.75rem;
         font-weight: 700;
         text-transform: uppercase;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        z-index: 20;
+        pointer-events: none;
+        letter-spacing: 0.5px;
     }
 
     .no-photo-wrap {
@@ -71,133 +140,148 @@
         align-items: center;
         justify-content: center;
         color: #94a3b8;
-        min-height: 300px;
+        background: #f1f5f9;
     }
 
     /* --- COLUNA DE DETALHES --- */
     .details-column {
-        padding: 30px; /* Reduzido de 50px */
+        padding: 40px; /* Mais espaçamento interno */
         display: flex;
         flex-direction: column;
         justify-content: center;
         height: 100%;
     }
 
-    /* Título */
     .property-title {
-        font-size: 1.5rem; /* Reduzido de 2.25rem */
-        font-weight: 700;
+        font-size: 1.8rem; /* Fonte maior */
+        font-weight: 800;
         color: var(--text-dark);
-        margin-bottom: 5px;
+        margin-bottom: 10px;
         line-height: 1.2;
     }
 
-    /* Preço */
     .property-price {
-        font-size: 1.8rem; /* Reduzido de 2.5rem */
+        font-size: 2rem; /* Preço bem visível */
         color: var(--success-color);
         font-weight: 700;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
     }
 
     .property-price span {
-        font-size: 0.9rem;
+        font-size: 1rem;
         color: var(--text-gray);
-        font-weight: 400;
+        font-weight: 500;
     }
 
-    /* Grid de Características */
     .features-grid {
         display: flex;
-        gap: 20px;
-        margin-bottom: 20px;
-        padding-bottom: 20px;
-        border-bottom: 1px solid #f1f5f9;
+        gap: 25px;
+        margin-bottom: 25px;
+        padding-bottom: 25px;
+        border-bottom: 1px solid #e2e8f0;
     }
 
     .feature-item {
         display: flex;
-        align-items: center; /* Alinhado lateralmente para economizar espaço */
-        gap: 8px;
+        align-items: center;
+        gap: 10px;
     }
 
     .feature-icon {
         color: var(--primary-color);
-        background: #eef2ff;
-        width: 32px; /* Menor */
-        height: 32px;
+        background: #e0e7ff;
+        width: 36px;
+        height: 36px;
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 8px;
-        font-size: 0.9rem;
+        font-size: 1rem;
     }
 
     .feature-text {
-        font-size: 0.85rem;
+        font-size: 0.95rem;
         font-weight: 600;
-        color: #475569;
+        color: #334155;
     }
 
-    /* Descrição */
     .desc-title {
-        font-size: 0.7rem;
+        font-size: 0.8rem;
         font-weight: 700;
         color: #94a3b8;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
         text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
     .property-description {
         color: var(--text-gray);
-        line-height: 1.5;
-        font-size: 0.9rem; /* Fonte menor */
-        margin-bottom: 25px;
-        display: -webkit-box;
-        line-clamp: 4; /* Limita a 4 linhas de texto */
-        -webkit-box-orient: vertical;
-        overflow: hidden;
+        line-height: 1.6;
+        font-size: 1rem;
+        margin-bottom: 35px;
     }
 
     /* --- BOTÕES --- */
     .action-buttons {
         display: grid;
-        grid-template-columns: 1fr 2fr;
-        gap: 10px;
+        grid-template-columns: 130px 1fr; /* Largura fixa para o botão voltar, resto para o WhatsApp */
+        gap: 15px;
     }
 
     .btn-back, .btn-rent {
-        padding: 10px 15px; /* Botões mais finos */
-        border-radius: 10px;
-        font-size: 0.9rem;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 1rem;
         font-weight: 600;
         display: flex;
         align-items: center;
         justify-content: center;
         text-decoration: none;
         transition: all 0.2s;
+        cursor: pointer;
     }
 
     .btn-back {
-        background-color: transparent;
-        border: 1px solid #cbd5e1;
+        background-color: white;
+        border: 2px solid #e2e8f0;
         color: var(--text-gray);
     }
-    .btn-back:hover { border-color: var(--text-dark); color: var(--text-dark); }
+    .btn-back:hover { 
+        border-color: var(--text-dark); 
+        color: var(--text-dark); 
+    }
 
     .btn-rent {
         background: var(--primary-color);
         color: white;
         border: none;
-        gap: 8px;
+        gap: 10px;
+        box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
     }
-    .btn-rent:hover { background-color: #4338ca; transform: translateY(-1px); }
+    .btn-rent:hover { 
+        background-color: #4338ca; 
+        transform: translateY(-2px);
+        box-shadow: 0 6px 8px rgba(79, 70, 229, 0.3);
+    }
 
     /* Responsividade */
-    @media (max-width: 768px) {
-        .image-column { min-height: 250px; }
-        .details-column { padding: 20px; }
-        .property-title { font-size: 1.3rem; }
+    @media (max-width: 991px) {
+        /* No Mobile/Tablet, a imagem fica em cima e precisa de altura fixa */
+        .image-column { 
+            height: 350px !important; 
+            min-height: 350px !important;
+        }
+        
+        .details-column { 
+            padding: 25px; 
+        }
+        
+        .property-title { font-size: 1.5rem; }
+        .property-price { font-size: 1.6rem; }
+        
+        .action-buttons {
+            grid-template-columns: 1fr; /* Botões empilhados no mobile */
+        }
     }
 </style>
 
@@ -205,23 +289,48 @@
     <div class="property-card">
         <div class="row g-0"> 
             
-            <div class="col-lg-5">
+            <div class="col-lg-6">
                 <div class="image-column">
-                    {% if imovel.foto %}
-                        <img src="{{ imovel.foto.url }}" alt="{{ imovel.nome }}" class="property-image">
-                        <div class="badge-floating">
-                            {{ imovel.categoria }}
+                    
+                    <div class="badge-floating">
+                        {{ imovel.categoria }}
+                    </div>
+
+                    <div class="carousel-wrapper" id="carousel-detalhe">
+                        <div class="carousel-container">
+                            
+                            <div class="carousel-slide">
+                                {% if imovel.foto %}
+                                    <img src="{{ imovel.foto.url }}" alt="{{ imovel.nome }}">
+                                {% else %}
+                                    <div class="no-photo-wrap">
+                                        <i class="fa-regular fa-image fa-3x mb-3"></i>
+                                        <span>Sem foto disponível</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            {% for img_extra in imovel.imagens.all %}
+                            <div class="carousel-slide">
+                                <img src="{{ img_extra.imagem.url }}" alt="Foto extra">
+                            </div>
+                            {% endfor %}
+
                         </div>
-                    {% else %}
-                        <div class="no-photo-wrap">
-                            <i class="fa-regular fa-image fa-2x mb-2"></i>
-                            <small>Sem foto</small>
-                        </div>
-                    {% endif %}
+
+                        {% if imovel.imagens.all %}
+                            <button class="carousel-btn prev-btn" onclick="moverCarrossel('detalhe', -1)">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
+                            <button class="carousel-btn next-btn" onclick="moverCarrossel('detalhe', 1)">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
 
-            <div class="col-lg-7">
+            <div class="col-lg-6">
                 <div class="details-column">
                     
                     <h1 class="property-title">{{ imovel.nome }}</h1>
@@ -250,9 +359,10 @@
                         <a href="{% url 'home' %}" class="btn-back">
                             <i class="fa-solid fa-arrow-left" style="margin-right: 5px;"></i> Voltar
                         </a>
-                        <button class="btn-rent">
-                            <i class="fa-brands fa-whatsapp"></i> Tenho Interesse
-                        </button>
+                        <a href="https://wa.me/5534996336172?text=Olá, tenho interesse no imóvel: {{ imovel.endereco }}, {{ imovel.bairro }} - {{ imovel.tamanho }}m²" target="_blank" class="btn-rent">
+                            <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> 
+                            Falar com o Corretor
+                        </a>
                     </div>
 
                 </div>
@@ -260,5 +370,18 @@
         </div>
     </div>
 </div>
+
+<script>
+    function moverCarrossel(id, direcao) {
+        const wrapper = document.getElementById('carousel-' + id);
+        const container = wrapper.querySelector('.carousel-container');
+        const scrollAmount = container.clientWidth * direcao;
+        
+        container.scrollBy({
+            left: scrollAmount,
+            behavior: 'smooth'
+        });
+    }
+</script>
 
 {% endblock %}

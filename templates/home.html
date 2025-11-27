@@ -1,10 +1,10 @@
 {% load static %}
 
 <style>
-    /* Container dos Cards */
+    /* --- ESTILOS GERAIS DO CARD --- */
     .galeria-container {
         padding: 40px 0;
-        background-color: #f9fafb; /* Fundo cinza bem claro */
+        background-color: #f9fafb;
     }
 
     .cards-grid {
@@ -14,11 +14,10 @@
         padding: 0 20px;
     }
 
-    /* O Card em si */
     .imovel-card {
         background: #fff;
         border-radius: 12px;
-        overflow: hidden; /* Para a imagem não sair da borda arredondada */
+        overflow: hidden;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 10px 15px rgba(0, 0, 0, 0.1);
         transition: transform 0.2s, box-shadow 0.2s;
         border: 1px solid #e5e7eb;
@@ -32,38 +31,16 @@
         box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1);
     }
 
-    /* Área da Imagem */
     .card-img-top {
         height: 200px;
         width: 100%;
         position: relative;
     }
 
-    .card-img-top img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    /* Placeholder "Sem Foto" (O quadrado azul da imagem) */
-    .no-photo {
-        background-color: #5452f6; /* Azul Indigo da imagem */
-        height: 100%;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 24px;
-        font-weight: bold;
-    }
-
-    /* Corpo do Card */
     .card-body {
         padding: 20px;
     }
 
-    /* Cabeçalho do corpo (Tag + Preço) */
     .card-header-info {
         display: flex;
         justify-content: space-between;
@@ -72,8 +49,8 @@
     }
 
     .tag-tipo {
-        background-color: #e0e7ff; /* Fundo azulzinho */
-        color: #4338ca; /* Texto azul escuro */
+        background-color: #e0e7ff;
+        color: #4338ca;
         padding: 4px 10px;
         border-radius: 20px;
         font-size: 0.75rem;
@@ -82,12 +59,11 @@
     }
 
     .preco-texto {
-        color: #059669; /* Verde Esmeralda */
+        color: #059669;
         font-weight: 800;
         font-size: 1.1rem;
     }
 
-    /* Título e Detalhes */
     .card-titulo {
         font-size: 1.25rem;
         font-weight: 700;
@@ -98,7 +74,7 @@
 
     .card-meta {
         font-size: 0.85rem;
-        color: #6b7280; /* Cinza */
+        color: #6b7280;
         margin-bottom: 5px;
     }
 
@@ -112,21 +88,22 @@
         font-size: 0.9rem;
         color: #6b7280;
         display: -webkit-box;
-        line-clamp: 2; /* Limita a 2 linhas */
+        line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
         margin-bottom: 15px;
     }
 
-    /* Botão inferior */
-    .card-footer-btn {
+    .card-footer {
         padding: 15px 20px;
+        background-color: #fff;
+        border-top: 1px solid #f3f4f6;
     }
 
     .btn-detalhes {
         display: block;
         width: 100%;
-        background-color: #5452f6; /* Mesmo azul do topo */
+        background-color: #5452f6;
         color: white;
         text-align: center;
         padding: 10px 0;
@@ -134,6 +111,7 @@
         text-decoration: none;
         font-weight: 600;
         transition: background 0.3s;
+        margin-bottom: 5px;
     }
 
     .btn-detalhes:hover {
@@ -141,36 +119,131 @@
         color: white;
         text-decoration: none;
     }
-</style>
 
+    /* --- CSS DO CARROSSEL (SLIDER) --- */
+    .carousel-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%; /* Ocupa os 200px do pai */
+    }
+
+    .carousel-container {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        width: 100%;
+        height: 100%;
+        /* Esconder barra de rolagem */
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .carousel-container::-webkit-scrollbar {
+        display: none;
+    }
+
+    .carousel-slide {
+        flex: 0 0 100%;
+        width: 100%;
+        height: 100%;
+        scroll-snap-align: start;
+    }
+
+    .carousel-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .no-photo {
+        background-color: #5452f6;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    /* Setinhas de navegação */
+    .carousel-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        z-index: 10;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s;
+        font-size: 18px;
+    }
+
+    .carousel-wrapper:hover .carousel-btn {
+        opacity: 1;
+    }
+
+    .prev-btn { left: 10px; }
+    .next-btn { right: 10px; }
+</style>
 
 <section class="galeria-container">
     {% include 'partials/_buscar.html' %}
+    
     <div class="container">
         <h2 style="text-align: center; margin-bottom: 40px; color: #333; font-weight: bold;">Imóveis Disponíveis</h2>
 
         {% if cards %}
         <div class="cards-grid">
             {% for imovel in cards %}
-            
+
             <div class="imovel-card">
-                
-                <a href="{% url 'imagem' imovel.id %}" style="text-decoration: none;">
-                    <div class="card-img-top">
-                        {% if imovel.foto %}
-                            <img src="{{ imovel.foto.url }}" alt="{{ imovel.nome }}">
-                        {% else %}
-                            <div class="no-photo">
-                                Sem Foto
+
+                <div class="card-img-top">
+                    <div class="carousel-wrapper" id="carousel-{{ imovel.id }}">
+                        
+                        <div class="carousel-container">
+                            <div class="carousel-slide">
+                                <a href="{% url 'imagem' imovel.id %}">
+                                    {% if imovel.foto %}
+                                        <img src="{{ imovel.foto.url }}" alt="{{ imovel.nome }}">
+                                    {% else %}
+                                        <div class="no-photo">Sem Foto</div>
+                                    {% endif %}
+                                </a>
                             </div>
+
+                            {% for img_extra in imovel.imagens.all %}
+                            <div class="carousel-slide">
+                                <a href="{% url 'imagem' imovel.id %}">
+                                    <img src="{{ img_extra.imagem.url }}" alt="Foto Extra">
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        {% if imovel.imagens.all %}
+                            <button class="carousel-btn prev-btn" onclick="moverCarrossel('{{ imovel.id }}', -1)">&#10094;</button>
+                            <button class="carousel-btn next-btn" onclick="moverCarrossel('{{ imovel.id }}', 1)">&#10095;</button>
                         {% endif %}
+                        
                     </div>
-                </a>
+                </div>
 
                 <div class="card-body">
-                    
                     <div class="card-header-info">
-                        <span class="tag-tipo">{{ imovel.categoria  }}</span>
+                        <span class="tag-tipo">{{ imovel.categoria }}</span>
                         <span class="preco-texto">R$ {{ imovel.valor }}</span>
                     </div>
 
@@ -189,19 +262,47 @@
                     </p>
                 </div>
 
-                <div class="card-footer-btn">
+                <div class="card-footer">
                     <a href="{% url 'imagem' imovel.id %}" class="btn-detalhes">
                         Ver Detalhes
                     </a>
+
+                    {% if user.is_superuser %}
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <a href="{% url 'editar_imovel' imovel.id %}" class="btn-detalhes" style="background-color: #007a4d; flex: 1;">
+                            ✏️ Editar
+                        </a>
+                        <a href="{% url 'deletar_imovel' imovel.id %}" class="btn-detalhes" style="background-color: #dc2626; flex: 1;"
+                           onclick="return confirm('Tem certeza que deseja excluir este imóvel?');">
+                            🗑️ Excluir
+                        </a>
+                    </div>
+                    {% endif %}
                 </div>
 
             </div>
             {% endfor %}
         </div>
         {% else %}
-            <div style="text-align: center; padding: 50px;">
-                <p>Nenhum imóvel cadastrado no momento.</p>
-            </div>
+        <div style="text-align: center; padding: 50px;">
+            <p>Nenhum imóvel cadastrado no momento.</p>
+        </div>
         {% endif %}
     </div>
 </section>
+
+<script>
+    function moverCarrossel(idImovel, direcao) {
+        // Encontra o container específico desse imóvel
+        const wrapper = document.getElementById('carousel-' + idImovel);
+        const container = wrapper.querySelector('.carousel-container');
+        
+        // Calcula a largura do slide para saber quanto rolar
+        const scrollAmount = container.clientWidth * direcao;
+        
+        container.scrollBy({
+            left: scrollAmount,
+            behavior: 'smooth'
+        });
+    }
+</script>

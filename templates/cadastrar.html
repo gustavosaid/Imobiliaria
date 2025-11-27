@@ -5,28 +5,35 @@
 <style>
     /* Fundo da página e fonte */
     body {
-        background-color: #f8f9fa; /* Fundo cinza bem claro */
+        background-color: #f8f9fa;
+        /* Fundo cinza bem claro */
         font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
 
     /* O Cartão Branco Principal */
     .card-custom {
         background-color: #ffffff;
-        border: 1px solid #e5e7eb; /* Borda muito sutil */
-        border-radius: 8px;        /* Arredondamento suave */
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); /* Sombra moderna */
+        border: 1px solid #e5e7eb;
+        /* Borda muito sutil */
+        border-radius: 8px;
+        /* Arredondamento suave */
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        /* Sombra moderna */
         padding: 2rem;
         max-width: 800px;
-        margin: 0 auto; /* Centraliza */
+        margin: 0 auto;
+        /* Centraliza */
     }
 
     /* Título */
     .form-title {
-        color: #111827; /* Preto suave */
+        color: #111827;
+        /* Preto suave */
         font-weight: 700;
         font-size: 1.5rem;
         margin-bottom: 1.5rem;
-        text-align: left; /* Na imagem o título é alinhado à esquerda */
+        text-align: left;
+        /* Na imagem o título é alinhado à esquerda */
         border-bottom: 1px solid #e5e7eb;
         padding-bottom: 10px;
     }
@@ -36,25 +43,29 @@
         display: block;
         font-size: 0.875rem;
         font-weight: 500;
-        color: #4b5563; /* Cinza médio */
+        color: #4b5563;
+        /* Cinza médio */
         margin-bottom: 0.5rem;
     }
 
     /* Inputs (Caixas de texto) */
     /* Aplica estilo mesmo se o Django não tiver a classe form-control */
-    .card-custom input, 
-    .card-custom select, 
+    .card-custom input,
+    .card-custom select,
     .card-custom textarea {
         display: block;
         width: 100%;
-        padding: 0.625rem 0.75rem; /* Espaçamento interno confortável */
+        padding: 0.625rem 0.75rem;
+        /* Espaçamento interno confortável */
         font-size: 1rem;
         line-height: 1.5;
         color: #1f2937;
         background-color: #fff;
         background-clip: padding-box;
-        border: 1px solid #d1d5db; /* Borda cinza */
-        border-radius: 0.375rem;   /* Raio da borda igual da imagem */
+        border: 1px solid #d1d5db;
+        /* Borda cinza */
+        border-radius: 0.375rem;
+        /* Raio da borda igual da imagem */
         transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
 
@@ -64,16 +75,19 @@
     }
 
     /* Quando clica no input */
-    .card-custom input:focus, 
+    .card-custom input:focus,
     .card-custom textarea:focus {
-        border-color: #4f46e5; /* Cor indigo da borda ao focar */
+        border-color: #4f46e5;
+        /* Cor indigo da borda ao focar */
         outline: 0;
-        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); /* Brilho suave indigo */
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        /* Brilho suave indigo */
     }
 
     /* Botão de Enviar */
     .btn-indigo {
-        background-color: #4f46e5; /* Aquele roxo/azul da imagem */
+        background-color: #4f46e5;
+        /* Aquele roxo/azul da imagem */
         border-color: #4f46e5;
         color: white;
         font-weight: 600;
@@ -85,11 +99,13 @@
     }
 
     .btn-indigo:hover {
-        background-color: #4338ca; /* Um pouco mais escuro ao passar o mouse */
+        background-color: #4338ca;
+        /* Um pouco mais escuro ao passar o mouse */
     }
 
     .mb-custom {
-        margin-bottom: 1.25rem; /* Espaço entre os campos */
+        margin-bottom: 1.25rem;
+        /* Espaço entre os campos */
     }
 </style>
 {% include 'partials/_atalhos.html' %}
@@ -100,10 +116,10 @@
 
         <form action="{% url 'cadastrar_imagem' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            
+
             <div class="row">
                 {% for field in form.visible_fields %}
-                
+
                 <div class="col-12 mb-custom">
                     <label for="{{ field.id_for_label }}" class="label-custom">
                         {{ field.label }}
@@ -111,6 +127,11 @@
                     {{ field }}
                 </div>
                 {% endfor %}
+            </div>
+            
+            <div class="form-group">
+                <label>Selecione várias fotos (Segure Ctrl para selecionar mais de uma):</label>
+                <input type="file" name="imagens_extras" class="form-control" multiple>
             </div>
 
             <div class="mt-4">
